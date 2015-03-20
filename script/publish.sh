@@ -1,19 +1,16 @@
-if [ $# -ne 1 ]; then
-echo "usage: ./publish.sh \"commit message\""
+if [ $# -ne 2 ]; then
+echo "usage: ./publish.sh \"commit message\" <path to deployment tree>"
 exit 1;
 fi
+cwd="$PWD"
+# sculpin generate --env=prod
 
-sculpin generate --env=prod
-
-git stash
-git checkout gh-pages
-
-cp -R output_prod/* .
+cp -R output_prod/* $2
 rm -rf output_*
 
+cd $2
 git add *
 git commit -m "$1"
-git push origin --all
+git push origin master
 
-git checkout master
-git stash popThe system cannot find the path specified.
+cd "$cwd"
